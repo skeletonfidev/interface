@@ -60,6 +60,15 @@ export default function PrefetchBalancesWrapper({ children }: PropsWithChildren)
     else setHasUnfetchedBalances(true)
   }, [drawerOpen, fetchBalances, hasUpdatedTx])
 
+  // Keeps balances fresh when switching accounts
+  const prevAccount = usePrevious(account)
+  useEffect(() => {
+    if (account !== prevAccount) {
+      if (drawerOpen) fetchBalances()
+      else setHasUnfetchedBalances(true)
+    }
+  }, [account, drawerOpen, fetchBalances, prevAccount])
+
   const onHover = useCallback(() => {
     if (hasUnfetchedBalances) fetchBalances()
   }, [fetchBalances, hasUnfetchedBalances])
