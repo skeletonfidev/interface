@@ -160,7 +160,7 @@ export const PageTabs = () => {
         </MenuItem>
       </Box>
       {!shouldDisableNFTRoutes && (
-        <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
+        <MenuItem dataTestId="nft-nav" href="/nft" isActive={isNftPage}>
           <Trans>NFTs</Trans>
         </MenuItem>
       )}
