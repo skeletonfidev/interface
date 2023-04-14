@@ -61,6 +61,9 @@ const Wrapper = styled.div`
     gap: 40px;
     z-index: 2;
     position: relative;
+    @media screen and (max-width: 991px) {
+      gap: 24px;
+    }
   }
 
   .top {
