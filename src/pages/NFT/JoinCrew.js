@@ -1,58 +1,60 @@
+import noCheckImg from 'assets/images/nft/icon-checkbox.svg'
+import checkImg from 'assets/images/nft/icon-checkbox-checked.svg'
+import nftImg from 'assets/images/nft/nft-image1.svg'
 import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
-
 export default function JoinCrew() {
   const [choosenNFT, setChoosenNFT] = useState([])
   const listNFT = [
     {
       id: 1,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 2,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 3,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 4,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 5,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 11,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 21,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 31,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 41,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
     {
       id: 51,
-      img: '/nft-image1.svg',
+      img: nftImg,
       power: 100,
     },
   ]
@@ -142,9 +144,7 @@ export default function JoinCrew() {
                 <div className="checkItem">
                   {' '}
                   <img
-                    src={
-                      choosenNFT.includes(item.id) ? '/images/icon-checkbox-checked.svg' : '/images/icon-checkbox.svg'
-                    }
+                    src={choosenNFT.includes(item.id) ? checkImg : noCheckImg}
                     alt="check-box"
                     onClick={() => handleChange(item.id)}
                   />{' '}
@@ -170,7 +170,8 @@ export default function JoinCrew() {
 }
 
 const Wrapper = styled.div`
-  .container {
+  color: #fff;
+  &.container {
     padding-bottom: 200px;
   }
 

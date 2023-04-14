@@ -1,24 +1,19 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unknown-property */
 import { useWeb3React } from '@web3-react/core'
-import React, { useEffect, useState } from 'react'
+import tokenLogo from 'assets/images/nft/ftm.svg'
+import infoImg from 'assets/images/nft/info.svg'
+import minusImg from 'assets/images/nft/minus.svg'
+import noNFT from 'assets/images/nft/no-nft.svg'
+import plusImg from 'assets/images/nft/plus.svg'
+import { useToggleAccountDrawer } from 'components/AccountDrawer'
+import { MouseoverTooltip } from 'components/Tooltip'
 import styled from 'styled-components/macro'
-
+// eslint-disable-next-line import/no-unused-modules
 export default function Mint() {
-  const { account, provider } = useWeb3React()
+  const { account } = useWeb3React()
 
-  const [unlockOpen, setUnlockOpen] = useState(false)
-
-  useEffect(() => {
-    const accountConfigure = () => {}
-  }, [])
-
-  const onAddressClicked = () => {
-    setUnlockOpen(true)
-  }
-
-  const closeUnlock = () => {
-    setUnlockOpen(false)
-  }
-
+  const toggleWalletDrawer = useToggleAccountDrawer()
   return (
     <Wrapper className="total">
       <div className="label">Mint Skeleton</div>
@@ -29,7 +24,7 @@ export default function Mint() {
 
       <div className="nftBox">
         <div className="left">
-          <img src="/no-nft.svg" alt="no-nft" />
+          <img src={noNFT} alt="no-nft" />
 
           <div className="current">
             <div className="child">
@@ -40,7 +35,7 @@ export default function Mint() {
             <div className="child">
               <div className="title">Current Price</div>
               <div className="value">
-                <img src="/tokens/ftm.svg" alt="skull" /> 100 FTM
+                <img src={tokenLogo} alt="skull" /> 100 FTM
               </div>
             </div>
 
@@ -53,24 +48,34 @@ export default function Mint() {
           <div className="next">
             <div className="child">
               <div className="title">
-                Next Bonus <img src="/info.svg" alt="skull" />
+                Next Bonus{' '}
+                <MouseoverTooltip text="aaa">
+                  <img src={infoImg} className="info-img" alt="skull" />
+                </MouseoverTooltip>
               </div>
               <div className="value">180 SKELETON</div>
             </div>
 
             <div className="child">
               <div className="title">
-                Next Price <img src="/info.svg" alt="skull" />
+                Next Price{' '}
+                <MouseoverTooltip text="aaa">
+                  <img src={infoImg} className="info-img" alt="skull" />
+                </MouseoverTooltip>
               </div>
               <div className="value">
                 {' '}
-                <img src="/tokens/ftm.svg" alt="skull" /> 150 FTM
+                <img src={tokenLogo} alt="skull" />
+                150 FTM
               </div>
             </div>
 
             <div className="child">
               <div className="title">
-                Next Power <img src="/info.svg" alt="skull" />
+                Next Power{' '}
+                <MouseoverTooltip text="aaa">
+                  <img src={infoImg} className="info-img" alt="skull" />
+                </MouseoverTooltip>
               </div>
               <div className="value">1,500</div>
             </div>
@@ -85,14 +90,14 @@ export default function Mint() {
               <div className="titleSelect">Select number of Skeleton</div>
               <div className="boxSelect">
                 <div className="minus">
-                  <img src="/minus.svg" alt="minus" />
+                  <img src={minusImg} alt="minus" />
                 </div>
                 <div className="center">
                   <div className="centerTop">1</div>
-                  <div className="centerBottom">100FTM</div>
+                  <div className="centerBottom">100 FTM</div>
                 </div>
                 <div className="plus">
-                  <img src="/plus.svg" alt="plus" />
+                  <img src={plusImg} alt="plus" />
                 </div>
               </div>
             </div>
@@ -126,7 +131,7 @@ export default function Mint() {
           {account && account.address ? (
             <button className="btnMint">Mint</button>
           ) : (
-            <button disableElevation className="btnMint" variant="contained" onClick={onAddressClicked}>
+            <button onClick={toggleWalletDrawer} disableElevation className="btnMint" variant="contained">
               Connect Wallet
             </button>
           )}
@@ -136,8 +141,11 @@ export default function Mint() {
   )
 }
 const Wrapper = styled.div`
-  .total {
+  &.total {
     margin: 48px 0 72px 0;
+  }
+  .info-img {
+    cursor: pointer;
   }
 
   .label {
@@ -484,7 +492,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
+    color: rgba(255, 255, 255, 0.7);
     width: 40px;
     height: 40px;
 

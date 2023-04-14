@@ -1,3 +1,41 @@
 body{
   background: url("./assets/images/bg.svg") no-repeat center center;
 }
+.btn-primary {
+  background-color: #2e75ff !important;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  color: #fff !important;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: "Public Sans", sans-serif !important;
+  height: 40px;
+}
+.btn-secondary {
+  height: 40px;
+  background: rgba(79, 144, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #2e75ff;
+  line-height: 140%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  font-family: "Public Sans", sans-serif !important;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: scale(1.02);
+}

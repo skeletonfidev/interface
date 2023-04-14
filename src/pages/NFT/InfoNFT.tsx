@@ -1,11 +1,12 @@
+import nftImg from 'assets/images/nft/nft-image.svg'
+import shareImg from 'assets/images/nft/share.svg'
 import React from 'react'
 import styled from 'styled-components/macro'
-
 export default function InfoNFT() {
   return (
     <Wrapper className="total">
       <div className="top">
-        <img src="/nft-image.svg" alt="nft-image" />
+        <img src={nftImg} alt="nft-image" />
 
         <div className="right">
           <div className="label">Skeleton Crew</div>
@@ -16,7 +17,7 @@ export default function InfoNFT() {
 
           <div className="docs">
             View docs
-            <img src="/share.svg" alt="share" />
+            <img src={shareImg} alt="share" />
           </div>
         </div>
       </div>
@@ -54,10 +55,12 @@ export default function InfoNFT() {
 }
 
 const Wrapper = styled.div`
-  .total {
+  &.total {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    z-index: 2;
+    position: relative;
   }
 
   .top {
