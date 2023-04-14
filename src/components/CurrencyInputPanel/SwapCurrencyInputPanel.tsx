@@ -4,6 +4,7 @@ import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/anal
 import { Currency, CurrencyAmount, Percent } from '@uniswap/sdk-core'
 import { Pair } from '@uniswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
+import dropdown from 'assets/images/swap/dropdown.svg'
 import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
@@ -59,10 +60,10 @@ const CurrencySelect = styled(ButtonGray)<{
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+  background: rgba(255, 255, 255, 0.1);
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
-  color: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.white)};
+  color: ${({ selected, theme }) => (selected ? '#ffffff ' : '#000000')};
   cursor: pointer;
   height: unset;
   border-radius: 16px;
@@ -72,14 +73,15 @@ const CurrencySelect = styled(ButtonGray)<{
   font-size: 24px;
   font-weight: 400;
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
-  padding: ${({ selected }) => (selected ? '4px 8px 4px 4px' : '6px 6px 6px 8px')};
+  padding: 4px 8px;
   gap: 8px;
   justify-content: space-between;
   margin-left: ${({ hideInput }) => (hideInput ? '0' : '12px')};
 
   &:hover,
   &:active {
-    background-color: ${({ theme, selected }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+    color: #000000;
+    background-color: #00000060;
   }
 
   &:before {
@@ -93,14 +95,6 @@ const CurrencySelect = styled(ButtonGray)<{
     width: 100%;
     height: 100%;
     content: '';
-  }
-
-  &:hover:before {
-    background-color: ${({ theme }) => theme.stateOverlayHover};
-  }
-
-  &:active:before {
-    background-color: ${({ theme }) => theme.stateOverlayPressed};
   }
 
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
@@ -150,29 +144,26 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
 `
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
-  ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.25rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
-  font-size: 20px;
-  font-weight: 600;
+  margin: 0 4px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+
+  color: #ffffff;
 `
 
 const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   background-color: transparent;
   border: none;
-  color: ${({ theme }) => theme.accentAction};
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
-  padding: 4px 6px;
   pointer-events: ${({ disabled }) => (!disabled ? 'initial' : 'none')};
 
-  :hover {
-    opacity: ${({ disabled }) => (!disabled ? 0.8 : 0.4)};
-  }
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
 
-  :focus {
-    outline: none;
-  }
+  color: #2e75ff;
 `
 
 const StyledNumericalInput = styled(NumericalInput)<{ $loading: boolean }>`
@@ -282,7 +273,7 @@ export default function SwapCurrencyInputPanel({
                     <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
                   </span>
                 ) : currency ? (
-                  <CurrencyLogo style={{ marginRight: '2px' }} currency={currency} size="24px" />
+                  <CurrencyLogo currency={currency} size="24px" />
                 ) : null}
                 {pair ? (
                   <StyledTokenName className="pair-name-container">
@@ -298,7 +289,7 @@ export default function SwapCurrencyInputPanel({
                   </StyledTokenName>
                 )}
               </RowFixed>
-              {onCurrencySelect && <StyledDropDown selected={!!currency} />}
+              {onCurrencySelect && <img src={dropdown} alt="dropdown" />}
             </Aligner>
           </CurrencySelect>
         </InputRow>
@@ -309,7 +300,7 @@ export default function SwapCurrencyInputPanel({
                 <FiatValue fiatValue={fiatValue} priceImpact={priceImpact} />
               </LoadingOpacityContainer>
               {account ? (
-                <RowFixed style={{ height: '17px' }}>
+                <RowFixed>
                   <ThemedText.DeprecatedBody
                     color={theme.textSecondary}
                     fontWeight={400}
@@ -320,21 +311,32 @@ export default function SwapCurrencyInputPanel({
                       renderBalance ? (
                         renderBalance(selectedCurrencyBalance)
                       ) : (
-                        <Trans>Balance: {formatCurrencyAmount(selectedCurrencyBalance, 4)}</Trans>
+                        <Trans>
+                          <span
+                            style={{
+                              fontWeight: 400,
+                              fontSize: 12,
+                              lineHeight: '140%',
+                              color: 'rgba(255, 255, 255, 0.6)',
+                            }}
+                          >
+                            Balance: {formatCurrencyAmount(selectedCurrencyBalance, 4)}
+                          </span>
+                        </Trans>
                       )
                     ) : null}
                   </ThemedText.DeprecatedBody>
-                  {showMaxButton && selectedCurrencyBalance ? (
-                    <TraceEvent
-                      events={[BrowserEvent.onClick]}
-                      name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
-                      element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
-                    >
-                      <StyledBalanceMax onClick={onMax}>
-                        <Trans>Max</Trans>
-                      </StyledBalanceMax>
-                    </TraceEvent>
-                  ) : null}
+                  {/* {showMaxButton && selectedCurrencyBalance ? ( */}
+                  <TraceEvent
+                    events={[BrowserEvent.onClick]}
+                    name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
+                    element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
+                  >
+                    <StyledBalanceMax onClick={onMax}>
+                      <Trans>Max</Trans>
+                    </StyledBalanceMax>
+                  </TraceEvent>
+                  {/* ) : null} */}
                 </RowFixed>
               ) : (
                 <span />

@@ -26,17 +26,13 @@ export const PageWrapper = styled.div`
 // Mostly copied from `AppBody` but it was getting too hard to maintain backwards compatibility.
 export const SwapWrapper = styled.main<{ chainId: number | undefined }>`
   position: relative;
-  background: ${({ theme }) => theme.backgroundSurface};
+  background: #1b2b45;
   border-radius: 16px;
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
-  padding: 8px;
+  border-radius: 16px;
+  padding: 16px;
   box-shadow: ${({ chainId }) => !!chainId && chainId === SupportedChainId.BNB && '0px 40px 120px 0px #f0b90b29'};
   z-index: ${Z_INDEX.deprecated_content};
   transition: transform 250ms ease;
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.backgroundOutline};
-  }
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
@@ -44,13 +40,11 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   height: 40px;
   width: 40px;
   position: relative;
-  margin-top: -18px;
-  margin-bottom: -18px;
+  margin-top: -14px;
+  margin-bottom: -14px;
   margin-left: auto;
   margin-right: auto;
-  background-color: ${({ theme }) => theme.backgroundInteractive};
-  border: 4px solid;
-  border-color: ${({ theme }) => theme.backgroundSurface};
+  background: transparent;
 
   z-index: 2;
   ${({ clickable }) =>

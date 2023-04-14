@@ -33,6 +33,7 @@ import close_icon from "assets/images/header/close_icon.svg";
 import Blur from "./Blur";
 import * as styles from "./style.css";
 import "./index.css";
+import { ChainSelector } from "./ChainSelector";
 
 // Fix framer-motion old React FC type (solved in react 18)
 const AnimatePresence = (
@@ -184,6 +185,8 @@ const Navbar = ({ blur }: { blur: boolean }) => {
       {blur && <Blur />}
       <Nav>
         <Box display="flex" height="full" flexWrap="nowrap">
+        {/* <ChainSelector leftAlign={true} /> */}
+        
           <Box className={styles.leftSideContainer}>
             {isIpad && (
               <div>
@@ -216,6 +219,8 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                     </div>
                   </div>
                 </header>
+
+             
 
                 <AnimatePresence>
                   {isDrawerVisible && (

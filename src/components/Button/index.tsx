@@ -66,10 +66,12 @@ export const BaseButton = styled(RebassButton)<BaseButtonProps>`
 `
 
 export const ButtonPrimary = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.accentAction};
-  font-size: 20px;
-  font-weight: 600;
-  padding: 16px;
+  background: #2e75ff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+
+  color: #ffffff;
   color: ${({ theme }) => theme.accentTextLightPrimary};
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.accentAction)};

@@ -12,6 +12,7 @@ import { Trade } from '@uniswap/router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core'
 import { UNIVERSAL_ROUTER_ADDRESS } from '@uniswap/universal-router-sdk'
 import { useWeb3React } from '@web3-react/core'
+import btn_switch from 'assets/images/swap/btn-switch.svg'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
 import { sendEvent } from 'components/analytics'
 import Loader from 'components/Icons/LoadingSpinner'
@@ -82,41 +83,32 @@ const ArrowContainer = styled.div`
 
 const SwapSection = styled.div`
   position: relative;
-  background-color: ${({ theme }) => theme.backgroundModule};
-  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
   padding: 16px;
   color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
 
-  &:before {
-    box-sizing: border-box;
-    background-size: 100%;
-    border-radius: inherit;
+  input {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 140%;
 
-    position: absolute;
-    top: 0;
-    left: 0;
+    color: #ffffff;
 
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    content: '';
-    border: 1px solid ${({ theme }) => theme.backgroundModule};
-  }
+    &::placeholder {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 140%;
 
-  &:hover:before {
-    border-color: ${({ theme }) => theme.stateOverlayHover};
-  }
-
-  &:focus-within:before {
-    border-color: ${({ theme }) => theme.stateOverlayPressed};
+      color: rgba(255, 255, 255, 0.6);
+    }
   }
 `
 
 const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>`
-  border-bottom: ${({ theme }) => `1px solid ${theme.backgroundSurface}`};
   border-bottom-left-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
   border-bottom-right-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
 `
@@ -545,8 +537,14 @@ export default function Swap({ className }: { className?: string }) {
                     />
                   </Trace>
                 </SwapSection>
-                <ArrowWrapper clickable={isSupportedChain(chainId)}>
-                  <TraceEvent
+                <ArrowWrapper
+                  clickable={isSupportedChain(chainId)}
+                  onClick={() => {
+                    onSwitchTokens()
+                  }}
+                >
+                  <img src={btn_switch} alt="btn_switch" />
+                  {/* <TraceEvent
                     events={[BrowserEvent.onClick]}
                     name={SwapEventName.SWAP_TOKENS_REVERSED}
                     element={InterfaceElementName.SWAP_TOKENS_REVERSE_ARROW_BUTTON}
@@ -564,7 +562,7 @@ export default function Swap({ className }: { className?: string }) {
                         }
                       />
                     </ArrowContainer>
-                  </TraceEvent>
+                  </TraceEvent> */}
                 </ArrowWrapper>
               </div>
               <AutoColumn gap="md">
