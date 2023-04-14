@@ -94,7 +94,7 @@ const HeaderWrapper = styled.div<{ transparent?: boolean }>`
   top: 0;
   z-index: ${Z_INDEX.dropdown};
 
-  @media screen and (max-width: 600px) {
+  &.site-header--active {
     background-color: #000000;
   }
 `
@@ -103,7 +103,7 @@ const FooterWrapper = styled.div`
   position: absolute;
   bottom: 0;
 
-  width: 100vw;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
@@ -169,6 +169,7 @@ const LazyLoadSpinner = () => (
 )
 
 export default function App() {
+  const [addBg, setAddBg] = useState(false)
   const isLoaded = useFeatureFlagsIsLoaded()
   const [shouldDisableNFTRoutes, setShouldDisableNFTRoutes] = useAtom(shouldDisableNFTRoutesAtom)
 
@@ -179,6 +180,15 @@ export default function App() {
   const [scrolledState, setScrolledState] = useState(false)
 
   useAnalyticsReporter()
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      setAddBg(window.scrollY > 50)
+    })
+    if (window.pageYOffset > 50) {
+      setAddBg(true)
+    }
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -254,7 +264,7 @@ export default function App() {
             api: process.env.REACT_APP_STATSIG_PROXY_URL,
           }}
         >
-          <HeaderWrapper transparent={isHeaderTransparent}>
+          <HeaderWrapper transparent={isHeaderTransparent} className={`${addBg && 'site-header--active'}`}>
             <NavBar blur={isHeaderTransparent} />
           </HeaderWrapper>
           <BodyWrapper>
