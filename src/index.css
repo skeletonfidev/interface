@@ -1,4 +1,5 @@
 body{
+  position: relative;
   background: url("./assets/images/bg.svg") no-repeat center center;
 }
 .btn-primary {
