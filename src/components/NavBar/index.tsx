@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
+import ExternalLink from 'components/ExternalLink/ExternalLink'
 import Web3Status from 'components/Web3Status'
 import { chainIdToBackendName } from 'graphql/data/util'
 import { useIsNftPage } from 'hooks/useIsNftPage'
@@ -7,7 +8,6 @@ import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
 import { useAtomValue } from 'jotai/utils'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
-import { UniIcon } from 'nft/components/icons'
 import { useProfilePageState } from 'nft/hooks'
 import { ProfilePageStateType } from 'nft/types'
 import { ReactNode } from 'react'
@@ -15,18 +15,50 @@ import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-do
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import styled from 'styled-components/macro'
 
+import site_logo from '../../assets/images/site_logo.svg'
 import { Bag } from './Bag'
 import Blur from './Blur'
 import { ChainSelector } from './ChainSelector'
-import { MenuDropdown } from './MenuDropdown'
 import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
-
 const Nav = styled.nav`
   padding: 20px 12px;
   width: 100%;
   height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
+`
+
+const PageHeader = styled.nav`
+  display: flex;
+
+  a {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 140%;
+    color: rgba(255, 255, 255, 0.6);
+
+    &.link-underline {
+      text-decoration: none;
+
+      margin: 4px 0;
+      padding: 8px 14px;
+    }
+
+    &.active {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 8px 16px;
+      gap: 10px;
+      background: #2e75ff;
+      border-radius: 100px;
+
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 140%;
+      color: #ffffff;
+    }
+  }
 `
 
 interface MenuItemProps {
@@ -62,27 +94,30 @@ export const PageTabs = () => {
   const shouldDisableNFTRoutes = useAtomValue(shouldDisableNFTRoutesAtom)
 
   return (
-    <>
+    <PageHeader>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
         <Trans>Swap</Trans>
+      </MenuItem>
+      <MenuItem href="/farm" isActive={pathname.startsWith('/farm')}>
+        <Trans>Farm</Trans>
       </MenuItem>
       <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
       </MenuItem>
+      <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
+        <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+          <Trans>Pools</Trans>
+        </MenuItem>
+      </Box>
       {!shouldDisableNFTRoutes && (
         <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
           <Trans>NFTs</Trans>
         </MenuItem>
       )}
       <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
-        <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
-          <Trans>Pools</Trans>
-        </MenuItem>
+        <ExternalLink href="https://metamask.io">Docs</ExternalLink>
       </Box>
-      <Box marginY={{ sm: '4', md: 'unset' }}>
-        <MenuDropdown />
-      </Box>
-    </>
+    </PageHeader>
   )
 }
 
@@ -97,20 +132,9 @@ const Navbar = ({ blur }: { blur: boolean }) => {
       <Nav>
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
-            <Box className={styles.logoContainer}>
-              <UniIcon
-                width="48"
-                height="48"
-                data-testid="uniswap-logo"
-                className={styles.logo}
-                onClick={() => {
-                  navigate({
-                    pathname: '/',
-                    search: '?intro=true',
-                  })
-                }}
-              />
-            </Box>
+            <img src={site_logo} alt="site_logo" />
+          </Box>
+          <Box className={styles.leftSideContainer}>
             {!isNftPage && (
               <Box display={{ sm: 'flex', lg: 'none' }}>
                 <ChainSelector leftAlign={true} />
@@ -120,9 +144,10 @@ const Navbar = ({ blur }: { blur: boolean }) => {
               <PageTabs />
             </Row>
           </Box>
-          <Box className={styles.searchContainer}>
+
+          {/* <Box className={styles.searchContainer}>
             <SearchBar />
-          </Box>
+          </Box> */}
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
               <Box position="relative" display={{ sm: 'flex', navSearchInputVisible: 'none' }}>
