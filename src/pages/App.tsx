@@ -87,13 +87,16 @@ const MobileBottomBar = styled.div`
 
 const HeaderWrapper = styled.div<{ transparent?: boolean }>`
   ${flexRowNoWrap};
-  background-color: #000000;
   border-bottom: #000000;
   width: 100%;
   justify-content: space-between;
   position: fixed;
   top: 0;
   z-index: ${Z_INDEX.dropdown};
+
+  @media screen and (max-width: 600px) {
+    background-color: #000000;
+  }
 `
 
 const FooterWrapper = styled.div`
