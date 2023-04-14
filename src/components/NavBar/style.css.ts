@@ -36,6 +36,14 @@ export const leftSideContainer = style([
   }),
 ])
 
+export const menuContainer = style([
+  baseSideContainer,
+  sprinkles({
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  }),
+])
+
 export const searchContainer = style([
   sprinkles({
     flex: '1',

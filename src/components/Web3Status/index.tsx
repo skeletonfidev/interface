@@ -2,16 +2,17 @@ import { Trans } from '@lingui/macro'
 import { sendAnalyticsEvent, TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
+import wallet from 'assets/images/account/wallet.svg'
 import PortfolioDrawer, { useAccountDrawer } from 'components/AccountDrawer'
 import PrefetchBalancesWrapper from 'components/AccountDrawer/PrefetchBalancesWrapper'
 import Loader from 'components/Icons/LoadingSpinner'
-import { IconWrapper } from 'components/Identicon/StatusIcon'
 import { useGetConnection } from 'connection'
 import { Portal } from 'nft/components/common/Portal'
 import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { darken } from 'polished'
 import { useCallback, useMemo } from 'react'
 import { AlertTriangle } from 'react-feather'
+import { useMedia } from 'react-use'
 import { useAppSelector } from 'state/hooks'
 import styled from 'styled-components/macro'
 import { colors } from 'theme/colors'
@@ -95,11 +96,20 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
     }
   }
 
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
-    width: ${({ pending }) => !pending && '36px'};
+  @media only screen and (max-width: 600px) {
+    width: fit-content;
+    padding: 0;
+    background-color: transparent;
+    border: none;
 
-    ${IconWrapper} {
-      margin-right: 0;
+    :hover,
+    :focus {
+      border: none;
+      box-shadow: none;
+
+      :focus {
+        border: none;
+      }
     }
   }
 `
@@ -107,9 +117,9 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
 const AddressAndChevronContainer = styled.div`
   display: flex;
 
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
+  /* @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
     display: none;
-  }
+  } */
 `
 
 const Text = styled.p`
@@ -136,15 +146,20 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 const StyledConnectButton = styled.button`
-  background-color: transparent;
-  border: none;
-  border-top-left-radius: ${FULL_BORDER_RADIUS}px;
-  border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 10px 12px;
-  color: inherit;
+  border: none;
+  width: fit-content;
+  white-space: pre;
+  padding: 8px 16px;
+  gap: 4px;
+  background: #2e75ff;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
 `
 
 function Web3StatusInner() {
@@ -171,6 +186,8 @@ function Web3StatusInner() {
 
   const hasPendingTransactions = !!pending.length
 
+  const isMobile = useMedia('(max-width: 600px)')
+
   if (!chainId) {
     return null
   } else if (error) {
@@ -189,26 +206,37 @@ function Web3StatusInner() {
         name={InterfaceEventName.MINI_PORTFOLIO_TOGGLED}
         properties={{ type: 'open' }}
       >
-        <Web3StatusConnected
-          data-testid="web3-status-connected"
-          onClick={handleWalletDropdownClick}
-          pending={hasPendingTransactions}
-          isClaimAvailable={isClaimAvailable}
-        >
-          {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />}
-          {hasPendingTransactions ? (
-            <RowBetween>
-              <Text>
-                <Trans>{pending?.length} Pending</Trans>
-              </Text>{' '}
-              <Loader stroke="white" />
-            </RowBetween>
-          ) : (
-            <AddressAndChevronContainer>
-              <Text>{ENSName || shortenAddress(account)}</Text>
-            </AddressAndChevronContainer>
-          )}
-        </Web3StatusConnected>
+        {isMobile ? (
+          <Web3StatusConnected
+            data-testid="web3-status-connected"
+            onClick={handleWalletDropdownClick}
+            pending={hasPendingTransactions}
+            isClaimAvailable={isClaimAvailable}
+          >
+            {!hasPendingTransactions && <img src={wallet} alt="wallet" />}
+          </Web3StatusConnected>
+        ) : (
+          <Web3StatusConnected
+            data-testid="web3-status-connected"
+            onClick={handleWalletDropdownClick}
+            pending={hasPendingTransactions}
+            isClaimAvailable={isClaimAvailable}
+          >
+            {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />}
+            {hasPendingTransactions ? (
+              <RowBetween>
+                <Text>
+                  <Trans>{pending?.length} Pending</Trans>
+                </Text>{' '}
+                <Loader stroke="white" />
+              </RowBetween>
+            ) : (
+              <AddressAndChevronContainer>
+                <Text>{ENSName || shortenAddress(account)}</Text>
+              </AddressAndChevronContainer>
+            )}
+          </Web3StatusConnected>
+        )}
       </TraceEvent>
     )
   } else {
@@ -225,7 +253,7 @@ function Web3StatusInner() {
           onClick={handleWalletDropdownClick}
         >
           <StyledConnectButton tabIndex={-1} data-testid="navbar-connect-wallet">
-            <Trans>Connect</Trans>
+            <Trans>Connect Wallet</Trans>
           </StyledConnectButton>
         </Web3StatusConnectWrapper>
       </TraceEvent>

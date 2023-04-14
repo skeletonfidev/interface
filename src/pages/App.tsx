@@ -1,6 +1,11 @@
 import { getDeviceId, sendAnalyticsEvent, Trace, user } from '@uniswap/analytics'
 import { CustomUserProperties, getBrowser, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
+import discord from 'assets/images/footer/discord.svg'
+import medium from 'assets/images/footer/medium.svg'
+import telegram from 'assets/images/footer/telegram.svg'
+import twitter from 'assets/images/footer/twitter.svg'
+import ExternalLink from 'components/ExternalLink/ExternalLink'
 import Loader from 'components/Icons/LoadingSpinner'
 import TopLevelModals from 'components/TopLevelModals'
 import { useFeatureFlagsIsLoaded } from 'featureFlags'
@@ -22,9 +27,7 @@ import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
 import { useAnalyticsReporter } from '../components/analytics'
 import ErrorBoundary from '../components/ErrorBoundary'
-import { PageTabs } from '../components/NavBar'
 import NavBar from '../components/NavBar'
-import Polling from '../components/Polling'
 import Popups from '../components/Popups'
 import { useIsExpertMode } from '../state/user/hooks'
 import DarkModeQueryParamReader from '../theme/components/DarkModeQueryParamReader'
@@ -83,13 +86,44 @@ const MobileBottomBar = styled.div`
 
 const HeaderWrapper = styled.div<{ transparent?: boolean }>`
   ${flexRowNoWrap};
-  background-color: ${({ theme, transparent }) => !transparent && theme.backgroundSurface};
-  border-bottom: ${({ theme, transparent }) => !transparent && `1px solid ${theme.backgroundOutline}`};
+  background-color: #000000;
+  border-bottom: #000000;
   width: 100%;
   justify-content: space-between;
   position: fixed;
   top: 0;
   z-index: ${Z_INDEX.dropdown};
+`
+
+const FooterWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 24px;
+  gap: 16px;
+
+  .top {
+    display: flex;
+    gap: 33px;
+  }
+
+  .bottom {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 140%;
+
+    color: rgba(255, 255, 255, 0.6);
+
+    @media screen and (max-width: 600px) {
+      font-size: 12px;
+    }
+  }
 `
 
 function getCurrentPageFromLocation(locationPathname: string): InterfacePageName | undefined {
@@ -221,7 +255,8 @@ export default function App() {
           </HeaderWrapper>
           <BodyWrapper>
             <Popups />
-            <Polling />
+            {/* <Polling />
+             */}
             <TopLevelModals />
             <Suspense fallback={<Loader />}>
               {isLoaded ? (
@@ -335,9 +370,27 @@ export default function App() {
               )}
             </Suspense>
           </BodyWrapper>
-          <MobileBottomBar>
+          <FooterWrapper>
+            <div className="top">
+              <ExternalLink href="https://metamask.io">
+                <img src={discord} alt="discord" />
+              </ExternalLink>
+              <ExternalLink href="https://metamask.io">
+                <img src={medium} alt="medium" />
+              </ExternalLink>
+              <ExternalLink href="https://metamask.io">
+                <img src={telegram} alt="telegram" />
+              </ExternalLink>
+              <ExternalLink href="https://metamask.io">
+                <img src={twitter} alt="twitter" />
+              </ExternalLink>
+            </div>
+
+            <div className="bottom">Copyright © 2022 Skeleton Finance. All rights reserved.</div>
+          </FooterWrapper>
+          {/* <MobileBottomBar>
             <PageTabs />
-          </MobileBottomBar>
+          </MobileBottomBar> */}
         </StatsigProvider>
       </Trace>
     </ErrorBoundary>

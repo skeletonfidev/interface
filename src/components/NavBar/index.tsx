@@ -1,7 +1,11 @@
+/* eslint-disable */
+
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
+import cx from 'classnames'
 import ExternalLink from 'components/ExternalLink/ExternalLink'
 import Web3Status from 'components/Web3Status'
+import { AnimatePresence as FramerAnimatePresence, motion } from 'framer-motion'
 import { chainIdToBackendName } from 'graphql/data/util'
 import { useIsNftPage } from 'hooks/useIsNftPage'
 import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
@@ -9,29 +13,44 @@ import { useAtomValue } from 'jotai/utils'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
 import { useProfilePageState } from 'nft/hooks'
-import { ProfilePageStateType } from 'nft/types'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
+import { useMedia } from 'react-use'
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import styled from 'styled-components/macro'
 
 import site_logo from '../../assets/images/site_logo.svg'
-import { Bag } from './Bag'
 import Blur from './Blur'
-import { ChainSelector } from './ChainSelector'
-import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
+
+// Fix framer-motion old React FC type (solved in react 18)
+const AnimatePresence = (props: React.ComponentProps<typeof FramerAnimatePresence> & { children: ReactNode }) => (
+  <FramerAnimatePresence {...props} />
+)
+
 const Nav = styled.nav`
-  padding: 20px 12px;
+  padding: 8px 24px;
   width: 100%;
   height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
+
+  @media screen and (max-width: 600px) {
+    padding: 8px 16px;
+  }
 `
 
 const PageHeader = styled.nav`
   display: flex;
 
+  padding: 8px;
+  gap: 12px;
+
+  background: #010815;
+  border-radius: 100px;
+
   a {
+    margin: 0;
+
     font-weight: 400;
     font-size: 14px;
     line-height: 140%;
@@ -40,7 +59,6 @@ const PageHeader = styled.nav`
     &.link-underline {
       text-decoration: none;
 
-      margin: 4px 0;
       padding: 8px 14px;
     }
 
@@ -83,6 +101,11 @@ const MenuItem = ({ href, dataTestId, id, isActive, children }: MenuItemProps) =
   )
 }
 
+const slideVariants = {
+  hidden: { x: '-100%' },
+  visible: { x: 0 },
+}
+
 export const PageTabs = () => {
   const { pathname } = useLocation()
   const { chainId: connectedChainId } = useWeb3React()
@@ -122,9 +145,13 @@ export const PageTabs = () => {
 }
 
 const Navbar = ({ blur }: { blur: boolean }) => {
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false)
+
   const isNftPage = useIsNftPage()
   const sellPageState = useProfilePageState((state) => state.state)
   const navigate = useNavigate()
+
+  const isIpad = useMedia('(max-width: 768px)')
 
   return (
     <>
@@ -132,34 +159,65 @@ const Navbar = ({ blur }: { blur: boolean }) => {
       <Nav>
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
+            <div>
+              <header>
+                <div className={cx('App-header', 'small', { active: isDrawerVisible })}>
+                  <div
+                    className={cx('App-header-link-container', 'App-header-top', {
+                      active: isDrawerVisible,
+                    })}
+                  >
+                    <div className="App-header-container-left">
+                      <div className="App-header-menu-icon-block" onClick={() => setIsDrawerVisible(!isDrawerVisible)}>
+                        {!isDrawerVisible && <div className="App-header-menu-icon">hehe</div>}
+                        {isDrawerVisible && <div className="App-header-menu-icon">huhu</div>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+              <AnimatePresence>
+                {isDrawerVisible && (
+                  <motion.div
+                    onClick={() => setIsDrawerVisible(false)}
+                    className="App-header-links-container App-header-drawer"
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={slideVariants}
+                    transition={{ duration: 0.2 }}
+                  >
+                    TEST
+                    {/* {isLanding ? (
+              <HomeHeaderLinks small clickCloseIcon={() => setIsDrawerVisible(false)} />
+            ) : (
+              <AppHeaderLinks
+                small
+                openSettings={openSettings}
+                clickCloseIcon={() => setIsDrawerVisible(false)}
+                redirectPopupTimestamp={redirectPopupTimestamp}
+                showRedirectModal={showRedirectModal}
+              />
+            )} */}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <img src={site_logo} alt="site_logo" />
           </Box>
-          <Box className={styles.leftSideContainer}>
-            {!isNftPage && (
-              <Box display={{ sm: 'flex', lg: 'none' }}>
-                <ChainSelector leftAlign={true} />
-              </Box>
-            )}
-            <Row display={{ sm: 'none', lg: 'flex' }}>
-              <PageTabs />
-            </Row>
-          </Box>
 
-          {/* <Box className={styles.searchContainer}>
-            <SearchBar />
-          </Box> */}
+          {!isIpad && (
+            <Box className={styles.menuContainer}>
+              <Row display={{ sm: 'none', lg: 'flex' }}>
+                <PageTabs />
+              </Row>
+            </Box>
+          )}
+
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
-              <Box position="relative" display={{ sm: 'flex', navSearchInputVisible: 'none' }}>
-                <SearchBar />
-              </Box>
-              {isNftPage && sellPageState !== ProfilePageStateType.LISTING && <Bag />}
-              {!isNftPage && (
-                <Box display={{ sm: 'none', lg: 'flex' }}>
-                  <ChainSelector />
-                </Box>
-              )}
-
               <Web3Status />
             </Row>
           </Box>
@@ -170,3 +228,4 @@ const Navbar = ({ blur }: { blur: boolean }) => {
 }
 
 export default Navbar
+/* eslint-enable */
