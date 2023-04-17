@@ -52,7 +52,7 @@ interface SwapRouteProps extends React.HTMLAttributes<HTMLDivElement> {
 export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...rest }: SwapRouteProps) {
   const autoRouterSupported = useAutoRouterSupported()
   const routes = getTokenPath(trade)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const { chainId } = useWeb3React()
 
   const [darkMode] = useDarkModeManager()

@@ -116,7 +116,7 @@ interface SwapDetailsInlineProps {
 export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSlippage }: SwapDetailsInlineProps) {
   const theme = useTheme()
   const { chainId } = useWeb3React()
-  const [showDetails, setShowDetails] = useState(false)
+  const [showDetails, setShowDetails] = useState(true)
 
   return (
     <Wrapper style={{ marginTop: '0' }}>

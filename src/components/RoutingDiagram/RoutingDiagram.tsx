@@ -13,7 +13,7 @@ import styled from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { Z_INDEX } from 'theme/zIndex'
 
-import { ReactComponent as DotLine } from '../../assets/svg/dot_line.svg'
+import { ReactComponent as DotLine } from '../../assets/svg/dashed_line.svg'
 import { MouseoverTooltip } from '../Tooltip'
 
 const Wrapper = styled(Box)`
@@ -45,7 +45,13 @@ const DottedLine = styled.div`
   position: absolute;
   width: calc(100%);
   z-index: 1;
-  opacity: 0.5;
+  /* opacity: 0.6; */
+
+  .dashed_line {
+    width: 100%;
+    height: 1px;
+    border: 1px dashed rgba(255, 255, 255, 0.6);
+  }
 `
 
 const DotColor = styled(DotLine)`
@@ -112,7 +118,8 @@ function Route({ entry: { percent, path, protocol } }: { entry: RoutingDiagramEn
   return (
     <RouteRow>
       <DottedLine>
-        <DotColor />
+        {/* <DotColor /> */}
+        <div className="dashed_line" />
       </DottedLine>
       <OpaqueBadge>
         {protocol === Protocol.MIXED ? (
