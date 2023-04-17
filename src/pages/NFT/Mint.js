@@ -143,6 +143,9 @@ export default function Mint() {
 const Wrapper = styled.div`
   &.total {
     margin: 48px 0 72px 0;
+    @media screen and (max-width: 991px) {
+      margin: 40px 0;
+    }
   }
   .info-img {
     cursor: pointer;
@@ -167,8 +170,9 @@ const Wrapper = styled.div`
   }
 
   .nftBox {
-    display: flex;
+    display: grid;
 
+    grid-template-columns: 1fr 1fr;
     padding: 24px;
     gap: 24px;
 
@@ -178,13 +182,18 @@ const Wrapper = styled.div`
     border-radius: 16px;
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 991px) {
     .nftBox {
-      padding: 12px;
+      display: flex;
+
       flex-direction: column;
     }
   }
-
+  @media screen and (max-width: 700px) {
+    .nftBox {
+      padding: 16px;
+    }
+  }
   .left {
     flex: 1;
 

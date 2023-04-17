@@ -172,7 +172,7 @@ export default function JoinCrew() {
 const Wrapper = styled.div`
   color: #fff;
   &.container {
-    padding-bottom: 200px;
+    padding-bottom: 120px;
   }
 
   .title {
@@ -278,6 +278,9 @@ const Wrapper = styled.div`
     margin-left: 8px;
     display: flex;
     align-items: center;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
   }
   .nftActions {
     background: #09101c;
