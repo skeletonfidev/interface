@@ -504,7 +504,7 @@ export const MediumOnly = styled.span`
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.backgroundOutline};
+  background-color: rgba(255, 255, 255, 0.1);
 `
 
 export const GlowEffect = styled.div`

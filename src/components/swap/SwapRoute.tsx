@@ -6,6 +6,7 @@ import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
 import { Pair } from '@uniswap/v2-sdk'
 import { FeeAmount } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
+import dropdown from 'assets/images/swap/dropdown.svg'
 import AnimatedDropdown from 'components/AnimatedDropdown'
 import { AutoColumn } from 'components/Column'
 import { LoadingRows } from 'components/Loader/styled'
@@ -20,12 +21,12 @@ import styled from 'styled-components/macro'
 import { Separator, ThemedText } from 'theme'
 import { useDarkModeManager } from 'theme/components/ThemeToggle'
 
-import { AutoRouterLabel, AutoRouterLogo } from './RouterLabel'
+import { AutoRouterLabel } from './RouterLabel'
 
 const Wrapper = styled(AutoColumn)<{ darkMode?: boolean; fixedOpen?: boolean }>`
-  padding: ${({ fixedOpen }) => (fixedOpen ? '12px' : '12px 8px 12px 12px')};
+  padding: 12px;
   border-radius: 16px;
-  border: 1px solid ${({ theme, fixedOpen }) => (fixedOpen ? 'transparent' : theme.backgroundOutline)};
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
 `
 
@@ -72,10 +73,15 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
       >
         <RowBetween onClick={() => setOpen(!open)}>
           <AutoRow gap="4px" width="auto">
-            <AutoRouterLogo />
             <AutoRouterLabel />
           </AutoRow>
-          {fixedOpen ? null : <OpenCloseIcon open={open} />}
+          <img
+            style={{
+              rotate: open ? 'z 180deg' : 'unset',
+            }}
+            src={dropdown}
+            alt="dropdown"
+          />
         </RowBetween>
       </TraceEvent>
       <AnimatedDropdown open={open || fixedOpen}>
@@ -101,13 +107,19 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
                 </LoadingRows>
               ) : (
                 <ThemedText.DeprecatedMain fontSize={12} width={400} margin={0}>
-                  {trade?.gasUseEstimateUSD && chainId && SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? (
-                    <Trans>Best price route costs ~{formattedGasPriceString} in gas. </Trans>
-                  ) : null}{' '}
-                  <Trans>
-                    This route optimizes your total output by considering split routes, multiple hops, and the gas cost
-                    of each step.
-                  </Trans>
+                  <span
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.6)',
+                    }}
+                  >
+                    {trade?.gasUseEstimateUSD && chainId && SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? (
+                      <Trans>Best price route costs ~{formattedGasPriceString} in gas. </Trans>
+                    ) : null}{' '}
+                    <Trans>
+                      This route optimizes your total output by considering split routes, multiple hops, and the gas
+                      cost of each step.
+                    </Trans>
+                  </span>
                 </ThemedText.DeprecatedMain>
               )}
             </>

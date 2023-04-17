@@ -25,6 +25,32 @@ export const AutoColumn = styled.div<{
   grid-row-gap: ${({ gap, theme }) => (gap && theme.grids[gap as Gap]) || gap};
   justify-items: ${({ justify }) => justify && justify};
   flex-grow: ${({ grow }) => grow && 1};
+
+  .total-btn-wrapper {
+    button {
+      padding: 8px 16px;
+      gap: 4px;
+
+      height: 40px;
+
+      background: #2e75ff;
+      border-radius: 12px;
+
+      font-weight: 500 !important;
+      font-size: 14px !important;
+      line-height: 140% !important;
+
+      color: #ffffff !important;
+
+      div {
+        font-weight: 500 !important;
+        font-size: 14px !important;
+        line-height: 140% !important;
+
+        color: #ffffff !important;
+      }
+    }
+  }
 `
 
 export default Column

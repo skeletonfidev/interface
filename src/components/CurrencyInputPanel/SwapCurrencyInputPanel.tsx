@@ -326,17 +326,17 @@ export default function SwapCurrencyInputPanel({
                       )
                     ) : null}
                   </ThemedText.DeprecatedBody>
-                  {/* {showMaxButton && selectedCurrencyBalance ? ( */}
-                  <TraceEvent
-                    events={[BrowserEvent.onClick]}
-                    name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
-                    element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
-                  >
-                    <StyledBalanceMax onClick={onMax}>
-                      <Trans>Max</Trans>
-                    </StyledBalanceMax>
-                  </TraceEvent>
-                  {/* ) : null} */}
+                  {showMaxButton && selectedCurrencyBalance ? (
+                    <TraceEvent
+                      events={[BrowserEvent.onClick]}
+                      name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
+                      element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
+                    >
+                      <StyledBalanceMax onClick={onMax}>
+                        <Trans>Max</Trans>
+                      </StyledBalanceMax>
+                    </TraceEvent>
+                  ) : null}
                 </RowFixed>
               ) : (
                 <span />

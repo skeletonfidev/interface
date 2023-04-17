@@ -27,23 +27,12 @@ const StyledStaticRouterIcon = styled(StaticRouterIcon)`
 `
 
 const StyledAutoRouterLabel = styled(ThemedText.DeprecatedBlack)`
-  line-height: 1rem;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 140% !important;
 
-  /* fallback color */
-  color: ${({ theme }) => theme.accentSuccess};
-
-  @supports (-webkit-background-clip: text) and (-webkit-text-fill-color: transparent) {
-    background-image: linear-gradient(90deg, #2172e5 0%, #54e521 163.16%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  color: #ffffff !important;
 `
-
-export function AutoRouterLogo() {
-  const autoRouterSupported = useAutoRouterSupported()
-
-  return autoRouterSupported ? <StyledAutoRouterIcon /> : <StyledStaticRouterIcon />
-}
 
 export function AutoRouterLabel() {
   const autoRouterSupported = useAutoRouterSupported()

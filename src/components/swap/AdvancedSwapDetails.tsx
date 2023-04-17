@@ -20,6 +20,30 @@ const StyledCard = styled(Card)`
   padding: 0;
 `
 
+const LabelSpan = styled.span`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+
+  color: rgba(255, 255, 255, 0.6);
+`
+
+const ValueSpan = styled.span`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+
+  color: #ffffff;
+
+  div {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
+
+    color: #ffffff;
+  }
+`
+
 interface AdvancedSwapDetailsProps {
   trade?: InterfaceTrade<Currency, Currency, TradeType>
   allowedSlippage: Percent
@@ -77,15 +101,19 @@ export function AdvancedSwapDetails({
               disableHover={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
-                <Trans>Expected Output</Trans>
+                <LabelSpan>
+                  <Trans>Expected Output </Trans>
+                </LabelSpan>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
           </RowFixed>
           <TextWithLoadingPlaceholder syncing={syncing} width={65}>
             <ThemedText.DeprecatedBlack textAlign="right" fontSize={14}>
-              {expectedOutputAmount
-                ? `${expectedOutputAmount.toSignificant(6)}  ${expectedOutputAmount.currency.symbol}`
-                : '-'}
+              <ValueSpan>
+                {expectedOutputAmount
+                  ? `${expectedOutputAmount.toSignificant(6)}  ${expectedOutputAmount.currency.symbol}`
+                  : '-'}
+              </ValueSpan>
             </ThemedText.DeprecatedBlack>
           </TextWithLoadingPlaceholder>
         </RowBetween>
@@ -96,15 +124,21 @@ export function AdvancedSwapDetails({
               disableHover={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
-                <Trans>Price Impact</Trans>
+                <LabelSpan>
+                  <Trans>Price Impact</Trans>
+                </LabelSpan>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
           </RowFixed>
-          <TextWithLoadingPlaceholder syncing={syncing} width={50}>
-            <ThemedText.DeprecatedBlack textAlign="right" fontSize={14}>
-              <FormattedPriceImpact priceImpact={priceImpact} />
-            </ThemedText.DeprecatedBlack>
-          </TextWithLoadingPlaceholder>
+          <ValueSpan>
+            {/* <TextWithLoadingPlaceholder syncing={syncing} width={50}>
+              <ThemedText.DeprecatedBlack textAlign="right" fontSize={14}>
+                <FormattedPriceImpact priceImpact={priceImpact} />
+              </ThemedText.DeprecatedBlack>
+            </TextWithLoadingPlaceholder> */}
+
+            <FormattedPriceImpact priceImpact={priceImpact} />
+          </ValueSpan>
         </RowBetween>
         <Separator />
         <RowBetween>
@@ -120,21 +154,33 @@ export function AdvancedSwapDetails({
             >
               <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>
                 {trade.tradeType === TradeType.EXACT_INPUT ? (
-                  <Trans>Minimum received</Trans>
+                  <LabelSpan>
+                    <Trans>Minimum received</Trans>
+                  </LabelSpan>
                 ) : (
-                  <Trans>Maximum sent</Trans>
+                  <LabelSpan>
+                    <Trans>Maximum sent</Trans>
+                  </LabelSpan>
                 )}{' '}
-                <Trans>after slippage</Trans> ({allowedSlippage.toFixed(2)}%)
+                <LabelSpan>
+                  <Trans>after slippage</Trans>
+                </LabelSpan>{' '}
+                <LabelSpan>({allowedSlippage.toFixed(2)}%)</LabelSpan>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
           </RowFixed>
-          <TextWithLoadingPlaceholder syncing={syncing} width={70}>
+          {/* <TextWithLoadingPlaceholder syncing={syncing} width={70}>
             <ThemedText.DeprecatedBlack textAlign="right" fontSize={14} color={theme.textTertiary}>
               {trade.tradeType === TradeType.EXACT_INPUT
                 ? `${trade.minimumAmountOut(allowedSlippage).toSignificant(6)} ${trade.outputAmount.currency.symbol}`
                 : `${trade.maximumAmountIn(allowedSlippage).toSignificant(6)} ${trade.inputAmount.currency.symbol}`}
             </ThemedText.DeprecatedBlack>
-          </TextWithLoadingPlaceholder>
+          </TextWithLoadingPlaceholder> */}
+          <ValueSpan>
+            {trade.tradeType === TradeType.EXACT_INPUT
+              ? `${trade.minimumAmountOut(allowedSlippage).toSignificant(6)} ${trade.outputAmount.currency.symbol}`
+              : `${trade.maximumAmountIn(allowedSlippage).toSignificant(6)} ${trade.inputAmount.currency.symbol}`}
+          </ValueSpan>
         </RowBetween>
         {!trade?.gasUseEstimateUSD || !chainId || !SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? null : (
           <RowBetween>
@@ -147,14 +193,17 @@ export function AdvancedSwapDetails({
               disableHover={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>
-                <Trans>Network Fee</Trans>
+                <LabelSpan>
+                  <Trans>Network Fee</Trans>
+                </LabelSpan>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
-            <TextWithLoadingPlaceholder syncing={syncing} width={50}>
+            {/* <TextWithLoadingPlaceholder syncing={syncing} width={50}>
               <ThemedText.DeprecatedBlack textAlign="right" fontSize={14} color={theme.textTertiary}>
                 ~${trade.gasUseEstimateUSD.toFixed(2)}
               </ThemedText.DeprecatedBlack>
-            </TextWithLoadingPlaceholder>
+            </TextWithLoadingPlaceholder> */}
+            <ValueSpan>~${trade.gasUseEstimateUSD.toFixed(2)}</ValueSpan>
           </RowBetween>
         )}
       </AutoColumn>

@@ -107,15 +107,10 @@ const SwapSection = styled.div`
   }
 `
 
-const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>`
-  border-bottom-left-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
-  border-bottom-right-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
-`
+const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>``
 
 const DetailsSwapSection = styled(SwapSection)`
   padding: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 `
 
 function getIsValidSwapQuote(
@@ -605,19 +600,19 @@ export default function Swap({ className }: { className?: string }) {
                       </>
                     ) : null}
                   </OutputSwapSection>
-                  {showDetailsDropdown && (
-                    <DetailsSwapSection>
-                      <SwapDetailsDropdown
-                        trade={trade}
-                        syncing={routeIsSyncing}
-                        loading={routeIsLoading}
-                        allowedSlippage={allowedSlippage}
-                      />
-                    </DetailsSwapSection>
-                  )}
                 </div>
+                {showDetailsDropdown && (
+                  <DetailsSwapSection>
+                    <SwapDetailsDropdown
+                      trade={trade}
+                      syncing={routeIsSyncing}
+                      loading={routeIsLoading}
+                      allowedSlippage={allowedSlippage}
+                    />
+                  </DetailsSwapSection>
+                )}
                 {showPriceImpactWarning && <PriceImpactWarning priceImpact={largerPriceImpact} />}
-                <div>
+                <div className="total-btn-wrapper">
                   {swapIsUnsupported ? (
                     <ButtonPrimary disabled={true}>
                       <ThemedText.DeprecatedMain mb="4px">

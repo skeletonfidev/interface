@@ -58,10 +58,32 @@ export default function TradePrice({ price }: TradePriceProps) {
       }}
       title={text}
     >
-      <ThemedText.BodySmall>{text}</ThemedText.BodySmall>{' '}
+      <ThemedText.BodySmall>
+        <span
+          style={{
+            fontWeight: 400,
+            fontSize: 12,
+            lineHeight: '140%',
+            color: '#FFFFFF',
+          }}
+        >
+          {text}
+        </span>
+      </ThemedText.BodySmall>{' '}
       {usdPrice && (
         <ThemedText.DeprecatedDarkGray>
-          <Trans>({formatNumber(usdPrice, NumberType.FiatTokenPrice)})</Trans>
+          <Trans>
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 12,
+                lineHeight: '140%',
+                color: 'rgba(255, 255, 255, 0.6)',
+              }}
+            >
+              ({formatNumber(usdPrice, NumberType.FiatTokenPrice)})
+            </span>
+          </Trans>
         </ThemedText.DeprecatedDarkGray>
       )}
     </StyledPriceContainer>
